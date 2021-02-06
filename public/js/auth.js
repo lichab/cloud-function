@@ -50,6 +50,15 @@ loginForm.addEventListener('submit', async e => {
   }
 });
 
+// sign out
+signOut.addEventListener('click', async () => {
+  try {
+    await firebase.auth().signOut();
+  } catch (error) {
+    console.log(error.message);
+  }
+});
+
 // authentication listener
 firebase.auth().onAuthStateChanged(user => {
   if (user) {

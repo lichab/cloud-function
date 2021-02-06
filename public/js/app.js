@@ -13,13 +13,3 @@ requestModal.addEventListener('click', e => {
     requestModal.classList.remove('open');
   }
 });
-
-// say hello function on call
-buttonSayHello.addEventListener('click', () => {
-  //get function reference
-  const sayHello = firebase.functions().httpsCallable('sayHello');
-
-  sayHello({ name: 'lisandro', age: 31 }).then(result => {
-    console.log(result.data);
-  });
-});

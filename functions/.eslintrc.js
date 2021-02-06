@@ -9,5 +9,6 @@ module.exports = {
   rules: {
     quotes: ['error', 'single'],
     'object-curly-spacing': ['error', 'always'],
+    'arrow-parens': ['warn', 'as-needed'],
   },
 };

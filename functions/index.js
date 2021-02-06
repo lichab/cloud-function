@@ -13,3 +13,9 @@ exports.toTheDojo = functions.https.onRequest((req, res) => {
 
   res.send(number.toString());
 });
+
+// http callable function
+
+exports.sayHello = functions.https.onCall((data, context) => {
+  return 'hello, lisandro';
+});

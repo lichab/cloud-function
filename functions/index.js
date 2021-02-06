@@ -9,13 +9,12 @@ exports.randomNumber = functions.https.onRequest((req, res) => {
 
 // http request 2
 exports.toTheDojo = functions.https.onRequest((req, res) => {
-  const number = Math.round(Math.random() * 100);
-
-  res.send(number.toString());
+  res.redirect('https://github.com');
 });
 
 // http callable function
 
 exports.sayHello = functions.https.onCall((data, context) => {
-  return 'hello, lisandro';
+  const { age, name } = data;
+  return `Hello ${name}, I see you are ${age} years of age.`;
 });

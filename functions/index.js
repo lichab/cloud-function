@@ -8,7 +8,7 @@ admin.initializeApp();
 exports.onNewUser = functions.auth.user().onCreate(user => {
   return admin.firestore().collection('users').doc(user.uid).set({
     email: user.email,
-    upVotedOn: [],
+    upVotedOn: []
   });
 });
 
@@ -37,6 +37,38 @@ exports.addRequest = functions.https.onCall((data, context) => {
 
   return admin.firestore().collection('requests').add({
     text: data.text,
-    upVotes: 0,
+    upVotes: 0
+  });
+});
+
+// upVote callable function
+exports.upVote = functions.https.onCall(async (data, context) => {
+  if (!context.auth) {
+    throw new functions.https.HttpsError(
+      'unauthenticated',
+      'You need to be signed in to perform this action'
+    );
+  }
+
+  // get user and request doc
+  const userDoc = admin.firestore().collection('users').doc(context.auth.uid);
+
+  const requestDoc = admin.firestore().collection('requests').doc(data.id);
+
+  const user = await userDoc.get();
+
+  if (user.data().upVotedOn.includes(data.id)) {
+    throw new functions.https.HttpsError(
+      'failed-precondition',
+      'you can not upvote twice'
+    );
+  }
+
+  await userDoc.update({
+    upVotedOn: [...user.data().upVotedOn, data.id]
+  });
+
+  await requestDoc.update({
+    upVotes: admin.firestore.FieldValue.increment(1)
   });
 });
